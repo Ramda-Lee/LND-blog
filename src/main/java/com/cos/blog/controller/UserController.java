@@ -160,7 +160,6 @@ public class UserController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), lndkey));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        System.out.println("1111111111");
         return "redirect:/";
     }
 
