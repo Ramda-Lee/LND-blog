@@ -4,7 +4,6 @@ import com.cos.blog.domain.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,12 +13,11 @@ import java.util.Collection;
 @Getter
 public class PrincipalDetail implements UserDetails {
 
-    private User user; //컴포지션
+    private final User user; //컴포지션
 
     public PrincipalDetail(User user) {
         this.user = user;
     }
-
 
     @Override
     public String getPassword() {

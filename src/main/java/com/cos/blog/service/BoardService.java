@@ -1,9 +1,13 @@
 package com.cos.blog.service;
 
 import com.cos.blog.domain.Board;
+import com.cos.blog.domain.Reply;
 import com.cos.blog.domain.RoleType;
 import com.cos.blog.domain.User;
+import com.cos.blog.dto.ReplyRequestDto;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepository;
+import com.cos.blog.repository.UserRepository;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +23,12 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public void writing(Board board, User user) {
@@ -51,5 +61,16 @@ public class BoardService {
         board.setContent(requestBoard.getContent());
         board.setCategory(requestBoard.getCategory());
         // 해당 함수 종료시(Service가 종료될 때) 트랜젝션이 종료될떄 더티체킹(자동 업데이트)가 됨.
+    }
+    @Transactional
+    public void writeReply(User user, Long boardId, Reply requestReply) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> {
+                    return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 ID를 찾을 수 없습니다.");
+                });
+        requestReply.setUser(user);
+        requestReply.setBoard(board);
+
+        replyRepository.save(requestReply);
     }
 }

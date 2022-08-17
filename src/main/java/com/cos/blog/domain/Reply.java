@@ -1,5 +1,6 @@
 package com.cos.blog.domain;
 
+import com.cos.blog.dto.ReplyRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,4 +34,11 @@ public class Reply {
 
     @CreationTimestamp
     private Timestamp createDate;
+
+    public void update(User user, Board board, String content) {
+
+        setUser(user);
+        setBoard(board);
+        setContent(content);
+    }
 }
