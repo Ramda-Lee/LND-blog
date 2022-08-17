@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 //ORM -> Java(다른언어) Object -> 테이블로 매핑해주는 기술
 @Entity //User 클래스가 MySQL에 자동으로 테이블 생성 된다.
@@ -34,7 +35,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleType role; //Enum을 쓰는게 졸다.
 
+    private String oauth;
+
     @CreationTimestamp //시간이 자동 입력
-    private Timestamp createDate;
+    private LocalDate createDate;
+
+    @PrePersist
+    public void createDate(){
+        this.createDate = LocalDate.now();
+    }
 
 }
