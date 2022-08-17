@@ -2,33 +2,21 @@ package com.cos.blog.service;
 
 import com.cos.blog.domain.Board;
 import com.cos.blog.domain.Reply;
-import com.cos.blog.domain.RoleType;
 import com.cos.blog.domain.User;
-import com.cos.blog.dto.ReplyRequestDto;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepository;
-import com.cos.blog.repository.UserRepository;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    private BoardRepository boardRepository;
-
-    @Autowired
-    private ReplyRepository replyRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final ReplyRepository replyRepository;
 
     @Transactional
     public void writing(Board board, User user) {
@@ -36,6 +24,7 @@ public class BoardService {
         board.setUser(user);
         boardRepository.save(board);
     }
+
     @Transactional(readOnly = true)
     public Page<Board> contentList(Pageable pageable) {
         return boardRepository.findAll(pageable);
@@ -47,6 +36,7 @@ public class BoardService {
             return new IllegalArgumentException("상세조회 실패 : 아이디를 찾을 수 없습니다.");
         });
     }
+
     @Transactional
     public void deleteContent(Long id) {
         boardRepository.deleteById(id);
@@ -62,6 +52,7 @@ public class BoardService {
         board.setCategory(requestBoard.getCategory());
         // 해당 함수 종료시(Service가 종료될 때) 트랜젝션이 종료될떄 더티체킹(자동 업데이트)가 됨.
     }
+
     @Transactional
     public void writeReply(User user, Long boardId, Reply requestReply) {
         Board board = boardRepository.findById(boardId)
