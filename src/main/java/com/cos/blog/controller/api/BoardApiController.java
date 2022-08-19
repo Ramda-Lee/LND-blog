@@ -3,12 +3,8 @@ package com.cos.blog.controller.api;
 import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.domain.Board;
 import com.cos.blog.domain.Reply;
-import com.cos.blog.domain.RoleType;
-import com.cos.blog.domain.User;
-import com.cos.blog.dto.ReplyRequestDto;
 import com.cos.blog.dto.ResponseDto;
 import com.cos.blog.service.BoardService;
-import com.cos.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,6 +42,12 @@ public class BoardApiController {
     public ResponseDto<Integer> replySave(@PathVariable("boardId") Long boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         boardService.writeReply(principalDetail.getUser(), boardId, reply);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
+
+    @DeleteMapping("/api/board/{boardId}/reply/{replyId}")
+    public ResponseDto<Integer> replyDelete(@PathVariable Long replyId) {
+        boardService.deleteReply(replyId);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 
