@@ -32,10 +32,13 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Board getContent(Long id) {
-        return boardRepository.findById(id).orElseThrow(() -> {
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("상세조회 실패 : 아이디를 찾을 수 없습니다.");
         });
+        board.setCount(board.getCount() + 1);
+        return board;
     }
+
 
     @Transactional
     public void deleteContent(Long id) {
